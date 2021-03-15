@@ -51,38 +51,42 @@ try:
     while True:
         if len(to_process):
             for x in to_process:
-                print(x)
+                try:
+                    print(x)
 
-                with open(x['file'], 'rb') as f:
-                    image = Image.open(io.BytesIO(f.read()))
-                    width, height = image.size
-                    fx = 0
-                    fy = 0
+                    with open(x['file'], 'rb') as f:
+                        image = Image.open(io.BytesIO(f.read()))
+                        width, height = image.size
+                        output = os.path.join(
+                            SAVE_DIR, os.path.basename(x['file']))
+                        fx = 0
+                        fy = 0
 
-                    draw = ImageDraw.Draw(image)
-                    fw, fh = draw.textsize(x['time'], font)
+                        draw = ImageDraw.Draw(image)
+                        fw, fh = draw.textsize(x['time'], font)
 
-                    position = TEXT_POSITION.split('-')
+                        position = TEXT_POSITION.split('-')
 
-                    if position[0] == 'bottom':
-                        fy = height - TEXT_OFFSET - fh
-                    elif position[0] == 'top':
-                        fy = TEXT_OFFSET
-                    elif position[0] == 'center':
-                        fy = height/2 - fh/2
+                        if position[0] == 'bottom':
+                            fy = height - TEXT_OFFSET - fh
+                        elif position[0] == 'top':
+                            fy = TEXT_OFFSET
+                        elif position[0] == 'center':
+                            fy = height/2 - fh/2
 
-                    if position[1] == 'right':
-                        fx = width - TEXT_OFFSET - fw
-                    elif position[1] == 'left':
-                        fx = TEXT_OFFSET
-                    elif position[1] == 'center':
-                        fx = width/2 - fw/2
+                        if position[1] == 'right':
+                            fx = width - TEXT_OFFSET - fw
+                        elif position[1] == 'left':
+                            fx = TEXT_OFFSET
+                        elif position[1] == 'center':
+                            fx = width/2 - fw/2
 
-                    draw.text((fx, fy), x['time'],
-                              font_color, font=font)
+                        draw.text((fx, fy), x['time'],
+                                  font_color, font=font)
 
-                    image.save(os.path.join(
-                        SAVE_DIR, os.path.basename(x['file'])), "JPEG")
+                        image.save(output, "JPEG")
+                except:
+                    print("Error")
 
             to_process.clear()
 
