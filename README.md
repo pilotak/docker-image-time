@@ -1,4 +1,6 @@
 # Docker image time
+[![docker build](https://github.com/pilotak/docker-image-time/actions/workflows/build.yaml/badge.svg)](https://github.com/pilotak/docker-image-time/actions/workflows/build.yaml)
+
 Overlay image with it's last modified time
 
 ```yaml

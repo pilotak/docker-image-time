@@ -1,5 +1,5 @@
 import os
-import time
+from time import sleep
 import io
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
@@ -37,7 +37,7 @@ class MyHandler(FileSystemEventHandler):
             now = datetime.now().strftime("%d.%m.%Y %H:%M:%S")
 
             # event is triggered at the start of modification, delay until everything is saved
-            time.sleep(1)
+            sleep(1)
 
             to_process.append({"file": self.src_path, "time": now})
 
@@ -86,7 +86,7 @@ try:
 
             to_process.clear()
 
-        time.sleep(0.5)
+        sleep(0.5)
 except KeyboardInterrupt:
     observer.stop()
 
