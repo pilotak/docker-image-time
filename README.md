@@ -9,7 +9,7 @@ services:
   camera_time:
     container_name: camera_time
     restart: unless-stopped
-    build: image-time
+    build: .
     environment:
       WATCH_PATH: '/watch_dir/test.jpg'
       SAVE_DIR: '/output'

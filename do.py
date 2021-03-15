@@ -20,7 +20,7 @@ font_color = FONT_COLOR.lstrip('#')
 font_color = tuple(
     int(font_color[i:i+2], 16) for i in (0, 2, 4))
 
-print("Watching path: %s" % WATCH_PATH)
+print("Watching path: {}".format(WATCH_PATH))
 
 
 class MyHandler(FileSystemEventHandler):
@@ -85,8 +85,9 @@ try:
                                   font_color, font=font)
 
                         image.save(output, "JPEG")
-                except:
-                    print("Error")
+
+                except Exception as e:
+                    print("Error {}".format(str(e)))
 
             to_process.clear()
 
