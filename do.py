@@ -3,6 +3,7 @@ from time import sleep
 import io
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+from ftplib import FTP
 from datetime import datetime
 from PIL import Image, ImageDraw, ImageFile, ImageFont
 ImageFile.LOAD_TRUNCATED_IMAGES = True
@@ -13,6 +14,10 @@ FONT_SIZE = int(os.getenv('FONT_SIZE', '25'))
 FONT_COLOR = os.getenv('FONT_COLOR', '#ffffff')
 TEXT_OFFSET = int(os.getenv('TEXT_OFFSET', '50'))
 TEXT_POSITION = os.getenv('TEXT_POSITION', 'bottom-right')
+FTP_SERVER = os.getenv('FTP_SERVER', None)
+FTP_USER = os.getenv('FTP_USER', None)
+FTP_PASSWORD = os.getenv('FTP_PASSWORD', None)
+FTP_PATH = os.getenv('FTP_PATH', None)
 
 to_process = []
 font = ImageFont.truetype("/font.ttf", FONT_SIZE)
@@ -85,6 +90,15 @@ try:
                                   font_color, font=font)
 
                         image.save(output, "JPEG")
+
+                        if FTP_SERVER is not None:
+                            print("Uploading file: {} to FTP".format(output))
+                            with FTP(host=FTP_SERVER, user=FTP_USER, passwd=FTP_PASSWORD) as ftp:
+                                ftp.cwd(FTP_PATH)
+
+                                with open(output, 'rb') as of:
+                                    ftp.storbinary('STOR {}'.format(
+                                        os.path.basename(output)), of)
 
                 except Exception as e:
                     print("Error {}".format(str(e)))
